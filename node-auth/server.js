@@ -11,6 +11,7 @@ app.use(express.json());
 // EXACTLY what "the two services agree on a secret" means in practice.
 const SECRET = process.env.JWT_SECRET || 'mission-control-shared-secret-key-32-bytes-minimum';
 
+const IP_ADDRESS = process.env.IP_ADDRESS || '10.8.78.152';
 // A stub, not a real user store - two hardcoded accounts is enough to
 // demonstrate "valid token in, protected data out" and "no token, or the
 // wrong one, in -> rejected".
@@ -40,5 +41,5 @@ app.get('/health', (req, res) => res.json({ status: 'up' }));
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`mission-auth-stub listening on http://localhost:${PORT}`);
-  console.log(`Try: curl -X POST http://localhost:${PORT}/login -H "Content-Type: application/json" -d '{"username":"alice","password":"mission123"}'`);
+  console.log(`Try: curl -X POST http://${IP_ADDRESS}:${PORT}/login -H "Content-Type: application/json" -d '{"username":"alice","password":"mission123"}'`);
 });
