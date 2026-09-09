@@ -37,7 +37,7 @@ services:
   
   transaction-service:
     build: ./transaction-service
-    container_name: jwt-springboot
+    container_name: transaction
 
     ports:
       - "8082:8082"
