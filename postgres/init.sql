@@ -1,2 +1,2 @@
-CREATE DATABASE banking_db;
-CREATE DATABASE transaction_db;
+CREATE DATABASE IF NOT EXISTS banking_db;
+CREATE DATABASE IF NOT EXISTS transaction_db;
