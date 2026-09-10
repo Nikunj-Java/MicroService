@@ -1,38 +1,25 @@
-package com.neueda.learning;
+package com.neueda.learning.dto;
 
-import jakarta.persistence.*;
+public class TransactionResponseDTO {
 
-@Entity
-@Table(name = "transactions")
-public class Transaction {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "account_id", nullable = false)
     private int accountId;
-
-    @Column(nullable = false,length = 20)
     private String type;
-
-    @Column(nullable = false)
     private double amount;
 
-    //private Account account;
-
-
-
-
-    public Transaction() {
+    public TransactionResponseDTO() {
     }
 
-    public Transaction(int accountId, String type, double amount) {
-        //this.id = id;
+    public TransactionResponseDTO(
+            int id,
+            int accountId,
+            String type,
+            double amount) {
+
+        this.id = id;
         this.accountId = accountId;
         this.type = type;
         this.amount = amount;
-
     }
 
     public int getId() {

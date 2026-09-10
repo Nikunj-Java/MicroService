@@ -18,7 +18,6 @@ public class TransactionService {
     // 01. Create Transaction
 
     public Transaction createTransaction(Transaction transaction) {
-        transaction.setId(null);
 
         return repository.save(transaction);
     }
@@ -34,7 +33,8 @@ public class TransactionService {
 
     public Transaction getTransactionById(int id) {
 
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElse(null);
     }
 
     // 04. Deposit
@@ -42,6 +42,10 @@ public class TransactionService {
     public String deposit(int accountId, double amount) {
 
         Transaction transaction = new Transaction();
+
+        transaction.setId(
+                repository.findAll().size() + 1
+        );
 
         transaction.setAccountId(accountId);
 
@@ -60,6 +64,10 @@ public class TransactionService {
 
         Transaction transaction = new Transaction();
 
+        transaction.setId(
+                repository.findAll().size() + 1
+        );
+
         transaction.setAccountId(accountId);
 
         transaction.setType("WITHDRAW");
@@ -71,15 +79,10 @@ public class TransactionService {
         return "Amount withdrawn successfully";
     }
 
-    // Micro Service
-    public Account getAccount(int accountId) {
+    // custom method to get transactions by accountId
+    public List<Transaction> getTransactionsByAccountId(int accountId) {
 
-        String url =
-                "http://localhost:8081/v1/accounts/" + accountId;
-
-        return restTemplate.getForObject(
-                url,
-                Account.class
-        );
+        return repository.findByAccountId(accountId);
     }
+
 }

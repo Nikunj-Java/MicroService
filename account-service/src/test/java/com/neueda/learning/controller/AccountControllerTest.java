@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.env.MockEnvironment;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -35,7 +36,7 @@ public class AccountControllerTest {
     void setUp() {
         service = mock(AccountService.class);
         restTemplate = mock(RestTemplate.class);
-        controller = new AccountController();
+        controller = new AccountController(new MockEnvironment());
         ReflectionTestUtils.setField(controller, "service", service);
         ReflectionTestUtils.setField(controller, "restTemplate", restTemplate);
     }
@@ -95,6 +96,30 @@ public class AccountControllerTest {
 
 
     @Test
+    void getAccountById_shouldReturnAccountWithTransaction() throws AccountNotFoundException {
+        Account account = new Account();
+        account.setId(3);
+        account.setName("Daisy");
+        account.setBalance(new BigDecimal("2100.00"));
+
+        Transaction transaction = new Transaction(10, 3, "DEPOSIT", 200.0);
+        Transaction[] transactions = new Transaction[]{transaction};
+
+        when(service.getAccountById(3)).thenReturn(account);
+        when(restTemplate.getForObject(eq("http://localhost:8082/v1/transactions/account/3"), eq(Transaction[].class)))
+                .thenReturn(transactions);
+
+        ResponseEntity<TransactionResponse> response = controller.getAccountById(3);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(account, response.getBody().getAccount());
+        assertNotNull(response.getBody().getTransaction());
+        assertEquals(1, response.getBody().getTransaction().length);
+        assertEquals(transaction, response.getBody().getTransaction()[0]);
+    }
+
+    @Test
     void getAccountById_shouldThrowForZeroId() {
         IllegalArgumentException ex =
                 assertThrows(IllegalArgumentException.class, () -> controller.getAccountById(0));
@@ -109,7 +134,7 @@ public class AccountControllerTest {
         account.setName("Eva");
         account.setBalance(new BigDecimal("1200.00"));
         when(service.getAccountById(5)).thenReturn(account);
-        when(restTemplate.getForObject(eq("http://localhost:8082/v1/transactions/5"), eq(Transaction.class)))
+        when(restTemplate.getForObject(eq("http://localhost:8082/v1/transactions/account/5"), eq(Transaction[].class)))
                 .thenThrow(new RestClientException("Service down"));
 
         IllegalStateException ex =
@@ -125,8 +150,8 @@ public class AccountControllerTest {
         account.setName("Frank");
         account.setBalance(new BigDecimal("900.00"));
         when(service.getAccountById(7)).thenReturn(account);
-        when(restTemplate.getForObject(eq("http://localhost:8082/v1/transactions/7"), eq(Transaction.class)))
-                .thenReturn(null);
+        when(restTemplate.getForObject(eq("http://localhost:8082/v1/transactions/account/7"), eq(Transaction[].class)))
+                .thenReturn(new Transaction[0]);
 
         AccountNotFoundException ex =
                 assertThrows(AccountNotFoundException.class, () -> controller.getAccountById(7));
