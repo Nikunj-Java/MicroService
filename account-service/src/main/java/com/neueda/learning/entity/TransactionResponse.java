@@ -3,13 +3,11 @@ package com.neueda.learning.entity;
 public class TransactionResponse {
 
     private Account account;
+    private Transaction[] transaction;
 
-    private Transaction transaction;
-
-    public TransactionResponse() {
-    }
-
-    public TransactionResponse(Account account, Transaction transaction) {
+    public TransactionResponse(
+            Account account,
+            Transaction[] transaction) {
         this.account = account;
         this.transaction = transaction;
     }
@@ -22,11 +20,11 @@ public class TransactionResponse {
         this.account = account;
     }
 
-    public Transaction getTransaction() {
+    public Transaction[] getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(Transaction transaction) {
+    public void setTransaction(Transaction[] transaction) {
         this.transaction = transaction;
     }
 }
