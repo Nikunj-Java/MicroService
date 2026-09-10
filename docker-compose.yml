@@ -46,7 +46,7 @@ services:
       - "8081:8081"
 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/account_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/banking_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: Nikunj@123
       JWT_SECRET: mission-control-shared-secret-key-32-bytes-minimum
