@@ -18,6 +18,7 @@ public class TransactionService {
     // 01. Create Transaction
 
     public Transaction createTransaction(Transaction transaction) {
+        transaction.setId(null);
 
         return repository.save(transaction);
     }
@@ -42,10 +43,6 @@ public class TransactionService {
 
         Transaction transaction = new Transaction();
 
-        transaction.setId(
-                repository.findAll().size() + 1
-        );
-
         transaction.setAccountId(accountId);
 
         transaction.setType("DEPOSIT");
@@ -62,10 +59,6 @@ public class TransactionService {
     public String withdraw(int accountId, double amount) {
 
         Transaction transaction = new Transaction();
-
-        transaction.setId(
-                repository.findAll().size() + 1
-        );
 
         transaction.setAccountId(accountId);
 

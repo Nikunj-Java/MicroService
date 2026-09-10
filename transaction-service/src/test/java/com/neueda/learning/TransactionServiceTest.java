@@ -38,6 +38,7 @@ class TransactionServiceTest {
         Transaction result = service.createTransaction(input);
 
         assertSame(input, result);
+        assertNull(input.getId());
         verify(repository).save(input);
     }
 
@@ -78,11 +79,6 @@ class TransactionServiceTest {
 
     @Test
     void deposit_ShouldCreateDepositTransactionAndReturnMessage() {
-        when(repository.findAll()).thenReturn(List.of(
-                new Transaction(1, 1001, "DEPOSIT", 100.0),
-                new Transaction(2, 1002, "WITHDRAW", 40.0)
-        ));
-
         String result = service.deposit(3001, 700.0);
 
         assertEquals("Amount deposited successfully", result);
@@ -91,7 +87,7 @@ class TransactionServiceTest {
         verify(repository).save(captor.capture());
 
         Transaction saved = captor.getValue();
-        assertEquals(3, saved.getId());
+        assertNull(saved.getId());
         assertEquals(3001, saved.getAccountId());
         assertEquals("DEPOSIT", saved.getType());
         assertEquals(700.0, saved.getAmount());
@@ -99,10 +95,6 @@ class TransactionServiceTest {
 
     @Test
     void withdraw_ShouldCreateWithdrawTransactionAndReturnMessage() {
-        when(repository.findAll()).thenReturn(List.of(
-                new Transaction(1, 1001, "DEPOSIT", 100.0)
-        ));
-
         String result = service.withdraw(4001, 300.0);
 
         assertEquals("Amount withdrawn successfully", result);
@@ -111,7 +103,7 @@ class TransactionServiceTest {
         verify(repository).save(captor.capture());
 
         Transaction saved = captor.getValue();
-        assertEquals(2, saved.getId());
+        assertNull(saved.getId());
         assertEquals(4001, saved.getAccountId());
         assertEquals("WITHDRAW", saved.getType());
         assertEquals(300.0, saved.getAmount());

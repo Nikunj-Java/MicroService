@@ -12,9 +12,8 @@ import jakarta.persistence.Table;
 public class Transaction {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "account_id", nullable = false)
     private int accountId;
@@ -33,7 +32,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(int id, int accountId, String type, double amount) {
+    public Transaction(Integer id, int accountId, String type, double amount) {
         this.id = id;
         this.accountId = accountId;
         this.type = type;
@@ -41,11 +40,17 @@ public class Transaction {
 
     }
 
-    public int getId() {
+    public Transaction(int accountId, String type, double amount) {
+        this.accountId = accountId;
+        this.type = type;
+        this.amount = amount;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
