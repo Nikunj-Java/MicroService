@@ -75,7 +75,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: Nikunj@123
        
     depends_on:
-      postgres:
+      postgres1:
         condition: service_healthy
 
     restart: unless-stopped
@@ -94,7 +94,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: Nikunj@123
        
     depends_on:
-      postgres:
+      postgres2:
         condition: service_healthy
 
     restart: unless-stopped
@@ -102,3 +102,4 @@ services:
 
 volumes:
   postgres_data:
+  postgres_data2:
