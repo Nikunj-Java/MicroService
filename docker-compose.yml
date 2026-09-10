@@ -35,7 +35,7 @@ services:
       
 
     ports:
-      - "5433:5433"
+      - "5433:5432"
 
     volumes:
       - postgres_data2:/var/lib/postgresql/data
@@ -89,7 +89,7 @@ services:
       - "8082:8082"
 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres2:5433/transaction_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres2:5432/transaction_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: Nikunj@123
        
