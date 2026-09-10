@@ -7,7 +7,7 @@ const app = express();
 // Configuration
 // ======================================================
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8083;
 
 // IMPORTANT:
 // This secret MUST be exactly the same as the JWT secret
