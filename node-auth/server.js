@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 8083;
 // IMPORTANT:
 // This secret MUST be exactly the same as the JWT secret
 // configured in your Spring Boot services.
-const JWT_SECRET = process.env.JWT_SECRET || "my-secret-key";
+const JWT_SECRET = process.env.JWT_SECRET || "mission-control-shared-secret-key-32-bytes-minimum";
 
 
 // ======================================================
