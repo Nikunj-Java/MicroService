@@ -48,6 +48,7 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> {})
 
                 .authorizeHttpRequests(auth -> auth
 
@@ -56,38 +57,38 @@ public class SecurityConfig {
                                 "/v1/accounts/health"
                         ).permitAll()
 
-                        // GET -> VIEW OR OPERATOR
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/v1/accounts/**"
-                        ).hasAnyRole(
-                                "MISSION_VIEW",
-                                "MISSION_OPERATOR"
-                        )
-
-                        // POST -> OPERATOR
-                        .requestMatchers(
-                                HttpMethod.POST,
-                                "/v1/accounts/**"
-                        ).hasRole(
-                                "MISSION_OPERATOR"
-                        )
-
-                        // PUT -> OPERATOR
-                        .requestMatchers(
-                                HttpMethod.PUT,
-                                "/v1/accounts/**"
-                        ).hasRole(
-                                "MISSION_OPERATOR"
-                        )
-
-                        // DELETE -> ADMIN
-                        .requestMatchers(
-                                HttpMethod.DELETE,
-                                "/v1/accounts/**"
-                        ).hasRole(
-                                "MISSION_ADMIN"
-                        )
+//                        // GET -> VIEW OR OPERATOR
+//                        .requestMatchers(
+//                                HttpMethod.GET,
+//                                "/v1/accounts/**"
+//                        ).hasAnyRole(
+//                                "MISSION_VIEW",
+//                                "MISSION_OPERATOR"
+//                        )
+//
+//                        // POST -> OPERATOR
+//                        .requestMatchers(
+//                                HttpMethod.POST,
+//                                "/v1/accounts/**"
+//                        ).hasRole(
+//                                "MISSION_OPERATOR"
+//                        )
+//
+//                        // PUT -> OPERATOR
+//                        .requestMatchers(
+//                                HttpMethod.PUT,
+//                                "/v1/accounts/**"
+//                        ).hasRole(
+//                                "MISSION_OPERATOR"
+//                        )
+//
+//                        // DELETE -> ADMIN
+//                        .requestMatchers(
+//                                HttpMethod.DELETE,
+//                                "/v1/accounts/**"
+//                        ).hasRole(
+//                                "MISSION_ADMIN"
+//                        )
 
                         // Everything else
                         .anyRequest().authenticated()

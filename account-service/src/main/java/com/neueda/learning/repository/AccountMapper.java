@@ -40,7 +40,8 @@ public interface AccountMapper {
             balance = #{balance}
         WHERE id = #{id}
         """)
-    int update(int id,Account account);
+    //int update(int id,Account account);
+    int update(@Param("id") int id, @Param("account") Account account);
 
 
     @Delete("""

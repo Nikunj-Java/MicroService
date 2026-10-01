@@ -1,5 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 
 const app = express();
 
@@ -19,6 +20,14 @@ const JWT_SECRET = process.env.JWT_SECRET || "mission-control-shared-secret-key-
 // Middleware
 // ======================================================
 
+// CORS Configuration - Allow Angular development server
+const corsOptions = {
+    origin: process.env.CORS_ORIGIN || "http://localhost:4200",
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 

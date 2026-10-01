@@ -22,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/accounts")
+@CrossOrigin(origins = {"http://localhost:4200","http://your_ip_address:4200"})
 public class AccountController {
     @Autowired
     private AccountService service; //DI of Service to Controller
