@@ -1,0 +1,22 @@
+<div class="card shadow-sm max-width-md mx-auto my-4">
+  <div class="card-body p-4 text-center">
+    <!-- Header -->
+    <h2 class="h5 text-muted text-uppercase tracking-wide mb-3">Holding Summary</h2>
+    
+    <!-- Quantity Display -->
+    <div class="display-6 fw-bold text-primary mb-4">
+      <span class="fs-6 text-secondary fw-normal d-block mb-1">Total Quantity</span>
+      {{ holdings() }}
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-center gap-2">
+      <button class="btn btn-success d-inline-flex align-items-center px-4" (click)="addHoldings()">
+        <span class="me-1">+</span> Add
+      </button>
+      <button class="btn btn-outline-danger d-inline-flex align-items-center px-4" (click)="removeHoldings()">
+        <span class="me-1">−</span> Remove
+      </button>
+    </div>
+  </div>
+</div>

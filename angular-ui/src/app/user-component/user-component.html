@@ -1,0 +1,156 @@
+<div class="container py-5">
+  <div class="row g-4 justify-content-center">
+    
+    <!-- Left Column: Form Card -->
+    <div class="col-12 col-lg-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <!-- Dynamic Header -->
+          <h1 class="h4 fw-bold mb-4 text-center" 
+              [class.text-primary]="selectedUserId === null" 
+              [class.text-success]="selectedUserId !== null">
+            {{ selectedUserId !== null ? 'Update Profile' : 'Create Account' }}
+          </h1>
+          
+          <form [formGroup]="registerForm" (ngSubmit)="submit()">
+            <!-- Name Input -->
+            <div class="mb-3">
+              <label for="name" class="form-label small fw-semibold text-secondary">Full Name</label>
+              <input
+                id="name"
+                type="text"
+                formControlName="name"
+                class="form-control form-control-lg"
+                [class.is-invalid]="registerForm.controls.name.touched && registerForm.controls.name.invalid"
+                placeholder="Enter full name"
+              />
+              <div class="invalid-feedback">
+                @if (registerForm.controls.name.hasError('required')) {
+                  <span>Name is required.</span>
+                }
+                @if (registerForm.controls.name.hasError('minlength')) {
+                  <span>Name must be at least 3 characters long.</span>
+                }
+              </div>
+            </div>
+
+            <!-- Balance Input -->
+            <div class="mb-4">
+              <label for="balance" class="form-label small fw-semibold text-secondary">
+                {{ selectedUserId !== null ? 'Current Balance' : 'Initial Balance' }}
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-secondary border-end-0">$</span>
+                <input
+                  id="balance"
+                  type="number"
+                  formControlName="balance"
+                  class="form-control form-control-lg border-start-0"
+                  [class.is-invalid]="registerForm.controls.balance.touched && registerForm.controls.balance.invalid"
+                  placeholder="0.00"
+                />
+                <div class="invalid-feedback">
+                  @if (registerForm.controls.balance.hasError('required')) {
+                    <span>Balance is required.</span>
+                  }
+                  @if (registerForm.controls.balance.hasError('min')) {
+                    <span>Balance cannot be less than 0.</span>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Context-Aware Action Buttons -->
+            @if (canEditAccounts()) {
+              <div class="d-grid gap-2">
+                <button 
+                  type="submit" 
+                  class="btn btn-lg fw-medium shadow-sm" 
+                  [class.btn-primary]="selectedUserId === null"
+                  [class.btn-success]="selectedUserId !== null"
+                  [disabled]="registerForm.invalid">
+                  {{ selectedUserId !== null ? 'Save Changes' : 'Register User' }}
+                </button>
+
+                @if (selectedUserId !== null) {
+                  <button 
+                    type="button" 
+                    class="btn btn-outline-secondary" 
+                    (click)="cancelEdit()">
+                    Cancel
+                  </button>
+                }
+              </div>
+            }
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: User Management Table -->
+    <div class="col-12 col-lg-7">
+      <div class="card border-0 shadow-sm">
+        <!-- Dashboard Header Control -->
+        <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="h5 fw-bold text-dark mb-0">User Directory</h2>
+            <small class="text-muted">Manage active profiles and balances</small>
+          </div>
+          @if (canViewAccounts()) {
+            <button
+              class="btn btn-sm btn-outline-primary fw-medium"
+              (click)="loadUsers()">
+              Refresh Data
+            </button>
+          }
+        </div>
+
+        <!-- Table Container -->
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light text-secondary small text-uppercase">
+                <tr>
+                  <th class="ps-4">ID</th>
+                  <th>Name</th>
+                  <th>Balance</th>
+                  <th class="pe-4 text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (user of users; track user.id) {
+                  <tr [class.table-warning]="selectedUserId === user.id">
+                    <td class="ps-4 text-muted">#{{ user.id }}</td>
+                    <td>
+                      <span class="fw-semibold text-dark">{{ user.name }}</span>
+                    </td>
+                    <td>
+                      <span class="badge bg-light text-dark border fw-medium px-2 py-1">
+                        ${{ user.balance }}
+                      </span>
+                    </td>
+                    <td class="pe-4 text-end">
+                      <div class="btn-group btn-group-sm" role="group">
+                        @if (canViewAccounts()) {
+                          <button type="button" class="btn btn-outline-secondary" (click)="getUserById(user.id)">Details</button>
+                        }
+                        @if (canEditAccounts()) {
+                          <button type="button" class="btn btn-outline-primary" (click)="editUser(user)">Update</button>
+                        }
+                        @if (canDeleteAccounts()) {
+                          <button type="button" class="btn btn-outline-danger" (click)="deleteAccount(user.id)">Delete</button>
+                        }
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
